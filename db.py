@@ -25,7 +25,6 @@ class database(object):
                 due_time TEXT);
             """)
         except Exception as e:
-            #print(e)
             pass
             
 
@@ -47,6 +46,22 @@ class database(object):
         self.conn.commit()
 
 
+    def make_list_from_task(self):
+        """
+        Forms a list of all task dicts
+        """
+        cur = self.conn.execute("""SELECT * FROM todo;""")
+        lst = []
+        for row in cur:
+            task = {}
+            task['id']            = row[0]
+            task['desc']          = row[1]
+            task['due_date']      = row[2]
+            task['due_time']      = row[3]
+            lst.append(task)
+        return lst
+
+
     def list_todo_table(self):
         """
         Returns the list of tasks in the todo table. If empty, returns an empty list.
@@ -55,16 +70,7 @@ class database(object):
             print("nothing to do!")
             return []
         else:
-            cur = self.conn.execute("""SELECT * FROM todo;""")
-            lst = []
-            for row in cur:
-                task = {}
-                task['id']            = row[0]
-                task['desc']          = row[1]
-                task['due_date']      = row[2]
-                task['due_time']      = row[3]
-                lst.append(task)
-            return lst
+            return self.make_list_from_task()
 
 
     def delete_todo_task(self, id):
@@ -125,3 +131,19 @@ class database(object):
             else:
                 return False
         print("is_todo_table_empty: table does not exist")
+
+    def length_longest_str(self, column):
+        """
+        Returns the length of the longest item in a column
+        Input column is a string
+        """
+        try:
+            lst = self.make_list_from_task()
+            max_len = 0
+            for task in lst:
+                if len(str(task[column])) > max_len:
+                    max_len = len(str(task[column]))
+            return max_len
+        except Exception as e:
+            print(e)
+            return 0

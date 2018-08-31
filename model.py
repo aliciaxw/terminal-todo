@@ -9,6 +9,9 @@ class Task(object):
         self.due_date    = due_date
         self.due_time    = due_time
 
+    def __str__(self):
+        print(self.desc + "   ")
+
     def to_dict(self):
         """
         Dictionary representation of the todo item
