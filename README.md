@@ -13,6 +13,7 @@ A list of available commands will be shown:
 * ```rm [task id]``` - remove a task
 
 ## Planned features
+* Global keyword support
 * Checking off tasks
 * Colored text
 * Nicer formatting
